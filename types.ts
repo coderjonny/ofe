@@ -28,6 +28,19 @@ export type UserState = {
   error?: any;
 };
 
+export type Post = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+export type PostState = {
+  list: Post[];
+  error?: any;
+}
+
 export type State = {
   users: UserState;
+  posts: PostState;
 };
