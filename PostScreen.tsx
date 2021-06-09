@@ -7,73 +7,21 @@ import Actions from './actions';
 import Selectors from './selectors';
 import { State, User, Post } from './types';
 import theme from './theme';
-import { StackNavigationProp } from '@react-navigation/stack';
 
-interface HomeProps {
-  users: User[];
-  posts: Post[];
-  fetchUsers: () => void;
-  fetchPosts: () => void;
-  navigation: StackNavigationProp<
-    {post: Post},
-    'POST'
-  >
+interface PostScreenProps {
+  post: Post;
 }
 
-export const Home = React.memo(({ posts, users, fetchUsers, fetchPosts, navigation}: HomeProps): React.ReactElement => {
-  const [loading, setLoading] = useState(true);
-  const [showUser, setShowUser] = useState(null);
+export const PostScreen = React.memo((navigation, {post, item }: PostScreenProps): React.ReactElement => {
 
-  useEffect(() => {
-    fetchUsers();
-    fetchPosts();
-    setLoading(false);
-  }, []);
-  const [ userToShow, setUserToShow ] = useState(2);
-
-  const user = users[userToShow];
-
-  const userPosts = useMemo( () => posts.filter( (post) => post.userId === user.id ) , [showUser])
-
-  useEffect(() => {
-    setShowUser(user)
-  }) 
-
-
-  // console.log('userPosts------', userPosts, posts, users)
-
-  const next = () => {
-    if (userToShow < users.length - 1) {
-      setUserToShow(userToShow + 1);
-    } else {
-      setUserToShow(0);
-    }
-  };
-  const prev = () => { 
-    if (userToShow > 0) {
-      setUserToShow(userToShow - 1)
-    } else {
-      setUserToShow(users.length - 1)
-    }
-  };
-
-
-  if (!users.length) {
-    return null;
-  }
-
+  console.log('post screen-----', post, item , navigation)
 
   const renderItem = ({item}) => {
     console.log('post item----', item)
-    const onPressPost = () => {
-      console.log('onPressPost---', item)
-      navigation.navigate('POST', {post: item})
-    }
-
     return (
-      <PostRow onPress={onPressPost}>
-        <H1>{loading ? 'loading' : item.id}</H1>
-        <H1>{loading ? 'loading' : item.title}</H1>
+      <PostRow>
+        <H1>{ item.id}</H1>
+        <H1>{item.title}</H1>
       </PostRow>
     );
   }
@@ -82,31 +30,12 @@ export const Home = React.memo(({ posts, users, fetchUsers, fetchPosts, navigati
     <Container>
       <TopBar>
         <Column>
-          <H1>{loading ? 'loading' : user.name}</H1>
-          <S1>{loading ? 'loading' : user.website}</S1>
-        </Column>
-        <Column>
-          <Row>
-            <TouchableOpacity onPress={prev}>
-              <ArrowIcon
-                name="md-arrow-back"
-                size={32}
-                color={theme.colors.accent}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={next}>
-              <ArrowIcon
-                name="md-arrow-forward"
-                size={32}
-                color={theme.colors.accent}
-              />
-            </TouchableOpacity>
-          </Row>
+          <H1>{`post.title`}</H1>
         </Column>
       </TopBar>
       <PostsContainer>
         <FlatList
-          data={userPosts}
+          data={[{id: 1}]}
           renderItem={renderItem}
           keyExtractor={(data, index ) => `${data.id} + ${index}`}
         />
@@ -121,7 +50,7 @@ export default connect((state: State) => ({
 }), dispatch => ({
   fetchUsers: () => dispatch(Actions.users.fetchUsers.trigger()),
   fetchPosts: () => dispatch(Actions.posts.fetchPosts.trigger()),
-}))(Home);
+}))(PostScreen);
 
 const Container = styled.View`
   flex: 1;

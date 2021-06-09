@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk'
 import Main from './Main';
+import PostScreen from './PostScreen';
 import reducers from './reducers';
 import theme from './theme';
 
@@ -25,6 +26,7 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="OFE" component={Main} />
+            <Stack.Screen name="POST" component={PostScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
