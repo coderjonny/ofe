@@ -7,14 +7,20 @@ import Actions from './actions';
 import Selectors from './selectors';
 import { State, User, Post } from './types';
 import theme from './theme';
+import { RouteProp } from '@react-navigation/native';
 
-interface PostScreenProps {
-  post: Post;
-}
+type PostScreenRouteProp = RouteProp<{
+  post: Post
+}, 'POST'>;
 
-export const PostScreen = React.memo((navigation, {post, item }: PostScreenProps): React.ReactElement => {
+type Props = {
+  route: PostScreenRouteProp;
+};
 
-  console.log('post screen-----', post, item , navigation)
+export const PostScreen = (({ route }: Props): React.ReactElement => {
+
+  const { post } = route.params;
+  console.log('post screen-----', post, route.params)
 
   const renderItem = ({item}) => {
     console.log('post item----', item)
@@ -30,7 +36,8 @@ export const PostScreen = React.memo((navigation, {post, item }: PostScreenProps
     <Container>
       <TopBar>
         <Column>
-          <H1>{`post.title`}</H1>
+          <H1>{post.id}</H1>
+          <H1>{post.title}</H1>
         </Column>
       </TopBar>
       <PostsContainer>

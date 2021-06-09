@@ -67,7 +67,7 @@ export const Home = React.memo(({ posts, users, fetchUsers, fetchPosts, navigati
     console.log('post item----', item)
     const onPressPost = () => {
       console.log('onPressPost---', item)
-      navigation.navigate('POST', {post: item})
+      navigation.navigate("POST", { post: item });
     }
 
     return (
